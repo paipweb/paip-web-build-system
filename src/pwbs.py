@@ -23,7 +23,7 @@ LICENSE
 
 VERSION
 
-    v.0.0.0.2
+    v.0.9.0.1
 """
 import sys
 from libs.pwm_json import *
