@@ -1,0 +1,21 @@
+{
+  "name": "pwbs",
+  "version": "0.0.0.1",
+  "description": "PAiP Web Build System",
+  "main": "pwbs.py",
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/paip-web/paip-web-build-system.git"
+  },
+  "keywords": [
+    "build",
+    "system",
+    "python"
+  ],
+  "author": "Patryk Adamczyk",
+  "license": "PAiP Open Source License",
+  "bugs": {
+    "url": "https://gitlab.com/paip-web/paip-web-build-system/issues"
+  },
+  "homepage": "https://gitlab.com/paip-web/paip-web-build-system#README"
+}
