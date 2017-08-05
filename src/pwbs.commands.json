@@ -1,3 +1,7 @@
 {
-    "test" : "echo Hello World"
+    "test" : "echo Hello World",
+    "main" : [
+        "test",
+        "test"
+    ]
 }

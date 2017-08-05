@@ -3,7 +3,7 @@
 """
 SYNOPSIS
 
-    pwbs [--help] [--version] [--new-config] [command]
+    pwbs [--help] [--version] [--debug] [--new-config] [command]
 
 DESCRIPTION
 
@@ -23,16 +23,18 @@ LICENSE
 
 VERSION
 
-    v.0.0.0.1
+    v.0.0.0.2
 """
 import sys
 from libs.pwm_json import *
 from libs.pwm_exec import *
 from libs.pwm_pwbs import *
 config_file = "pwbs.commands.json"
-version = "v.0.0.0.1"
+version = "v.0.0.0.2"
 def main(args):
     """Główna Funkcja Programu"""
+    verbose_debug_mode = False
+    argument_number = 1
     try:
         if args[1] == "--new-config":
             print("PWBS: Generowanie Pustego Pliku Komend")
@@ -43,14 +45,21 @@ def main(args):
             print(version)
             sys.exit()
         elif args[1] == "--help":
-            helper = "pwbs [--help] [--version] [--new-config] [command]"
+            helper = "pwbs [--help] [--version] [--debug] [--new-config] [command]"
             print(helper)
             helper = "System Budowania oparty o wykonywanie komend terminala"
             print(helper)
             sys.exit()
+        elif args[1] == "--debug":
+            verbose_debug_mode = True
+            argument_number = 2
+            try:
+                test = args[argument_number]
+            except Exception:
+                print("PWBS: Brak komendy - Uruchamianie 'main'")
     except Exception:
         print("PWBS: Brak komendy - Uruchamianie 'main'")
-    pwbs_main(args)
+    pwbs_main(args, verbose_debug_mode, argument_number)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
