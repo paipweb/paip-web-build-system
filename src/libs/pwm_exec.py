@@ -3,7 +3,7 @@
 """
 DESCRIPTION
 
-    PAiP Web Module - JSON
+    PAiP Web Module - Execute Commands
 
 AUTHOR
 
