@@ -30,7 +30,7 @@ from libs.pwm_json import *
 from libs.pwm_exec import *
 from libs.pwm_pwbs import *
 config_file = "pwbs.commands.json"
-version = "v.0.0.0.2"
+version = "v.0.9.0.1"
 def main(args):
     """Główna Funkcja Programu"""
     verbose_debug_mode = False
