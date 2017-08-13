@@ -8,5 +8,6 @@ python:
 install: 
 - "pip install -q coverage"
 script: 
-- coverage run src/pwbs.py
-- python -m unittest src/pwbs_test.py
+- cd src
+- coverage run pwbs.py
+- python -m unittest pwbs_test.py
