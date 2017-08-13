@@ -61,7 +61,7 @@ def pwbs_main(commands2, vdm, argnum):
     if end:
         if isinstance(commands[command], list):
             if verbose_debug_mode:
-                print(u"VDM: Test: if isinstance(" + str(commands[command]) + ",list) = " + str(isinstance(commands[command], list))
+                print(u"VDM: Test: if isinstance(" + str(commands[command]) + ",list) = " + str(isinstance(commands[command], list)))
             pwbs_execute_multiple(commands[command], verbose_debug_mode)
         else:
             cmd2 = commands[command]
