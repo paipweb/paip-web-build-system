@@ -17,10 +17,6 @@ VERSION
 
     v.0.0.0.1
 """
-# Fix for GitLab Pipeline Error
-import sys
-sys.setdefaultencoding("utf-8")
-#####
 import unittest
 from pwbs import *
 from libs.pwm_exec import *

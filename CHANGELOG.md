@@ -13,6 +13,9 @@ Dodanie Zdjęć przykładu użycia w ./docs/
 ## v.0.9.0.1 U2
 1. System Testów
 2. Poprawka Wersji PWBS
+## v.0.9.0.1 U3
+1. Travis CI & Gitlab Pipelines
+2. Zmiana print() w print(unicode()) w błędach
 ## v.0.9.1.0
 #### Do Zrobienia
 1. Wykonywanie wielu zadań jedną komendą (np. python pwbs.py --debug test main start server)
