@@ -1,7 +1,1 @@
-{
-    "test" : "echo Hello World",
-    "main" : [
-        "test",
-        "test"
-    ]
-}
+{"test": "echo Hello World", "main": ["test", "test"], "x": ["test", "main"]}

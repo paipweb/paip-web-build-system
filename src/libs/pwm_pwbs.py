@@ -15,7 +15,7 @@ LICENSE
 
 VERSION
 
-    v.0.0.0.3
+    v.0.0.0.4
 """
 import sys
 from .pwm_json import *
@@ -39,13 +39,14 @@ def pwbs_main(commands2, vdm, argnum):
         commands = read_json(config_file)
         if verbose_debug_mode:
             print(u"VDM: Commands: " + str(commands))
-    except Exception:
+    except Exception: # pragma: no cover
         try:
             print(u"Błąd F1: Błąd odczytywania pliku json")
         except UnicodeEncodeError:
             print("Error F1: Can't read json file")
         sys.exit()
-    if commands == []:
+    ## Tested manually
+    if commands == []: # pragma: no cover
         try:
             print(u"Błąd F2: Brak pliku "+ config_file +" lub brak komend")
         except UnicodeEncodeError:
@@ -79,7 +80,8 @@ def pwbs_main(commands2, vdm, argnum):
     else:
         try:
             print(u"Błąd A1: Brak Komendy '" + command + "'")
-        except UnicodeEncodeError:
+        ## Tested manually
+        except UnicodeEncodeError: # pragma: no cover
             print(u"Error A1: No command '" + command + "'")
 def pwbs_execute_multiple(commands, vdm):
     """Execute multiple commands"""
@@ -91,13 +93,14 @@ def pwbs_execute_multiple(commands, vdm):
             commands3 = read_json(config_file)
             if verbose_debug_mode:
                 print(u"VDM: Commands3" + str(commands3))
-        except Exception:
+        except Exception:  # pragma: no cover
             try:
                 print(u"Błąd F1: Błąd odczytywania pliku json")
             except UnicodeEncodeError:
                 print("Error F1: Can't read json file")
             sys.exit()
-        if commands3 == []:
+        ## Tested manually
+        if commands3 == []: # pragma: no cover
             try:
                 print(u"Błąd F2: Brak pliku "+ config_file +" lub brak komend")
             except UnicodeEncodeError:
@@ -119,8 +122,8 @@ def pwbs_execute_multiple(commands, vdm):
         if end:
             if isinstance(commands3[command], list):
                 if verbose_debug_mode:
-                    print(u"VDM: Test: if isinstance(" + commands[command] + ",list) = " + str(isinstance(commands[command], list)))
-                pwbs_execute_multiple(commands3[command])
+                    print(u"VDM: Test: if isinstance(" + str(commands3[command]) + ",list) = ", isinstance(commands3[command], list))
+                pwbs_execute_multiple(commands3[command], verbose_debug_mode)
             else:
                 cmd2 = commands3[command]
                 if verbose_debug_mode:
@@ -131,5 +134,6 @@ def pwbs_execute_multiple(commands, vdm):
         else:
             try:
                 print(u"Błąd A1: Brak Komendy '" + command + "'")
-            except UnicodeEncodeError:
+            ## Tested manually
+            except UnicodeEncodeError: # pragma: no cover
                 print(u"Error A1: No command '" + command + "'")

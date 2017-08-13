@@ -31,7 +31,7 @@ from libs.pwm_exec import *
 from libs.pwm_pwbs import *
 config_file = "pwbs.commands.json"
 version = "v.0.9.0.1"
-def main(args):
+def main(args, special=False):
     """Główna Funkcja Programu"""
     verbose_debug_mode = False
     argument_number = 1
@@ -39,7 +39,8 @@ def main(args):
         if args[1] == "--new-config":
             print("PWBS: Generowanie Pustego Pliku Komend")
             dane = []
-            write_json(config_file, dane)
+            if not special: # pragma: no cover
+                write_json(config_file, dane)
             sys.exit()
         elif args[1] == "--version":
             print(version)
@@ -60,6 +61,7 @@ def main(args):
     except Exception:
         print("PWBS: Brak komendy - Uruchamianie 'main'")
     pwbs_main(args, verbose_debug_mode, argument_number)
+    sys.exit()
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     sys.exit(main(sys.argv))
