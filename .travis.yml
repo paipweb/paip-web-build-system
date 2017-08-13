@@ -6,8 +6,7 @@ python:
   - "3.7-dev" # 3.7 development branch
   - "nightly" # currently points to 3.7-dev
 install: 
-- "pip install -q coverage"
+- "pip install -q coverage green"
 script: 
 - cd src
-- coverage run pwbs.py
-- python -m unittest pwbs_test.py
+- green -r pwbs_test.py
