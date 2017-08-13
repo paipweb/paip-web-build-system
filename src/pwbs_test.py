@@ -22,7 +22,11 @@ from pwbs import *
 from libs.pwm_exec import *
 from libs.pwm_json import *
 from libs.pwm_pwbs import *
-
+# Fix for GitLab Pipeline Error
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+#####
 class TestExecute(unittest.TestCase):
     """
     Test libs.pwm_exec.execute()
