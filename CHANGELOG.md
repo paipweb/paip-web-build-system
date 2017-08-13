@@ -16,6 +16,8 @@ Dodanie Zdjęć przykładu użycia w ./docs/
 ## v.0.9.0.1 U3
 1. Travis CI & Gitlab Pipelines
 2. Zmiana print() w print(unicode()) w błędach
+## v.0.9.0.1 U4
+1. Zmiana sposobu wyświetlania błędów
 ## v.0.9.1.0
 #### Do Zrobienia
 1. Wykonywanie wielu zadań jedną komendą (np. python pwbs.py --debug test main start server)

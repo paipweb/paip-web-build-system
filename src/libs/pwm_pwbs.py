@@ -40,10 +40,16 @@ def pwbs_main(commands2, vdm, argnum):
         if verbose_debug_mode:
             print(u"VDM: Commands: " + str(commands))
     except Exception:
-        print(u"Błąd F1: Błąd odczytywania pliku json")
+        try:
+            print(u"Błąd F1: Błąd odczytywania pliku json")
+        except UnicodeEncodeError:
+            print("Error F1: Can't read json file")
         sys.exit()
     if commands == []:
-        print(u"Błąd F2: Brak pliku "+ config_file +" lub brak komend")
+        try:
+            print(u"Błąd F2: Brak pliku "+ config_file +" lub brak komend")
+        except UnicodeEncodeError:
+            print("Error F2: Can't read" + config_file + " file or no commands")
         if verbose_debug_mode:
             print(u"VDM: Config File: " + config_file)
         sys.exit()
@@ -71,7 +77,10 @@ def pwbs_main(commands2, vdm, argnum):
             print(u"PWBS: Wykonywanie `" + cmd2 + "`")
             print(execute(cmd2))
     else:
-        print(u"Błąd A1: Brak Komendy '" + command + "'")
+        try:
+            print(u"Błąd A1: Brak Komendy '" + command + "'")
+        except UnicodeEncodeError:
+            print(u"Error A1: No command '" + command + "'")
 def pwbs_execute_multiple(commands, vdm):
     """Execute multiple commands"""
     verbose_debug_mode = vdm
@@ -83,10 +92,16 @@ def pwbs_execute_multiple(commands, vdm):
             if verbose_debug_mode:
                 print(u"VDM: Commands3" + str(commands3))
         except Exception:
-            print(u"Błąd F1: Błąd odczytywania pliku json")
+            try:
+                print(u"Błąd F1: Błąd odczytywania pliku json")
+            except UnicodeEncodeError:
+                print("Error F1: Can't read json file")
             sys.exit()
         if commands3 == []:
-            print(u"Błąd F2: Brak pliku "+ config_file +" lub brak komend")
+            try:
+                print(u"Błąd F2: Brak pliku "+ config_file +" lub brak komend")
+            except UnicodeEncodeError:
+                print("Error F2: Can't read" + config_file + " file or no commands")
             if verbose_debug_mode:
                 print(u"VDM: Config File" + config_file)
             sys.exit()
@@ -114,4 +129,7 @@ def pwbs_execute_multiple(commands, vdm):
                 print(u"PWBS: Wykonywanie `" + cmd2 + "`")
                 print(execute(cmd2))
         else:
-            print(u"Błąd A1: Brak Komendy '" + command + "'")
+            try:
+                print(u"Błąd A1: Brak Komendy '" + command + "'")
+            except UnicodeEncodeError:
+                print(u"Error A1: No command '" + command + "'")
