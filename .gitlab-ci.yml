@@ -3,6 +3,6 @@ test:
   - apt-get update -qy
   - apt-get install -y python3-dev python3-pip
   - pip3 install -q coverage
-  - pip3 install -q green
   - cd src
-  - green -r pwbs_test.py
+  - coverage run pwbs.py
+  - python3 -m unittest pwbs_test.py
