@@ -6,7 +6,9 @@ python:
   - "3.7-dev" # 3.7 development branch
   - "nightly" # currently points to 3.7-dev
 install: 
-- "pip install -q coverage green"
+- "pip install -q coverage green python-coveralls"
 script: 
 - cd src
 - green -r pwbs_test.py
+after_success:
+  - coveralls
