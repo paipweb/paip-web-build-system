@@ -3,7 +3,7 @@
 """
 SYNOPSIS
 
-    pwbs [--help] [--version] [--new-config] [command]
+    pwbs [--help] [--version] [--debug] [--new-config] [command]
 
 DESCRIPTION
 
@@ -23,13 +23,16 @@ LICENSE
 
 VERSION
 
-    v.0.9.0.1
+    v.0.9.1.0
 """
+# Import
 import sys
 import os
 import json
+##
 config_file = "pwbs.commands.json"
-version = "v.0.9.0.1"
+version = "v.0.9.1.0"
+# PWM_JSON.py
 def read_json(nazwapliku):
     """Funkcja odczytuje dane w formacie json z pliku"""
     dane = []
@@ -42,135 +45,176 @@ def write_json(nazwapliku, dane):
     with open(nazwapliku, "w") as plik:
         json.dump(dane, plik)
     return True
+# PWM_EXEC.py
 def execute(command, args = ''):
     """Funkcja Wykonująca Komendy"""
     from subprocess import call
-    return call(command + args, shell=True)
+    if isinstance(command, list): # pragma: no cover
+        retval = ""
+        for cmd in command:
+            retval += str(call(cmd, shell=True))
+        return retval
+    else:
+        return call(command + args, shell=True)
+##
 verbose_debug_mode = False
-arg_num = 1
-def pwbs_main(commands2, vdm, argnum):
+# PWM_PWBS.py
+def pwbs_main(arguments, verbose_debug_mode, special=False):
     """Główna Funkcja Systemu Budowania"""
-    verbose_debug_mode = vdm
-    arg_num = argnum
-    try:
-        command = commands2[arg_num]
-        if verbose_debug_mode:
-            print("VDM: Command: " + command)
-    except Exception:
-        command = "main"
-        if verbose_debug_mode:
-            print("VDM: Command: " + command)
-    try:
+    try: # pragma: no cover
         commands = read_json(config_file)
         if verbose_debug_mode:
-            print("VDM: Commands: " + str(commands))
-    except Exception:
-        print("Błąd F1: Błąd odczytywania pliku json")
-        sys.exit()
-    if commands == []:
-        print("Błąd F2: Brak pliku "+ config_file +" lub brak komend")
-        if verbose_debug_mode:
-            print("VDM: Config File: " + config_file)
-        sys.exit()
-    end = False
-    for cmd in commands:
-        if cmd == command:
-            end = True
-            if verbose_debug_mode:
-                print("VDM: Test: if " + cmd + "==" + command + "=" + str(end))
-            break
-        else:
-            if verbose_debug_mode:
-                print("VDM: Test: if " + cmd + "==" + command + "=" + str(end))
-            end = False
-    if end:
-        if isinstance(commands[command], list):
-            if verbose_debug_mode:
-                print("VDM: Test: if isinstance(" + str(commands[command]) + ",list) = " + str(isinstance(commands[command], list)))
-            pwbs_execute_multiple(commands[command], verbose_debug_mode)
-        else:
-            cmd2 = commands[command]
-            if verbose_debug_mode:
-                print("VDM: Command to execute: " + cmd2)
-            print("PWBS: Uruchamianie Polecenia '" + command + "'")
-            print("PWBS: Wykonywanie `" + cmd2 + "`")
-            print(execute(cmd2))
-    else:
-        print("Błąd A1: Brak Komendy '" + command + "'")
-def pwbs_execute_multiple(commands, vdm):
-    """Execute multiple commands"""
-    verbose_debug_mode = vdm
-    for command in commands:
-        if verbose_debug_mode:
-            print("VDM: Multiple commands->" + command)
+            print(u"VDM: Commands: " + str(commands))
+    except Exception: # pragma: no cover
         try:
-            commands3 = read_json(config_file)
-            if verbose_debug_mode:
-                print("VDM: Commands3" + str(commands3))
-        except Exception:
-            print("Błąd F1: Błąd odczytywania pliku json")
-            sys.exit()
-        if commands3 == []:
-            print("Błąd F2: Brak pliku "+ config_file +" lub brak komend")
-            if verbose_debug_mode:
-                print("VDM: Config File" + config_file)
-            sys.exit()
-        end = False
-        for cmd in commands3:
-            if cmd == command:
-                end = True
+            print(u"Błąd F1: Błąd odczytywania pliku json")
+        except UnicodeEncodeError:
+            print("Error F1: Can't read json file")
+        sys.exit()
+    ## Tested manually
+    if commands == []: # pragma: no cover
+        try:
+            print(u"Błąd F2: Brak pliku "+ config_file +" lub brak komend")
+        except UnicodeEncodeError:
+            print("Error F2: Can't read" + config_file + " file or no commands")
+        if verbose_debug_mode:
+            print(u"VDM: Config File: " + config_file)
+        sys.exit()
+    special_commands = ['--new-config', '--version', '--help', '--debug']
+    s = False
+    c = False
+    if verbose_debug_mode:
+        print(u"VDM: Arguments: " + str(arguments[1:]))
+    for arg in arguments[1:]: # pragma: no cover
+        s = True
+        if verbose_debug_mode:
+            print(u"VDM: Test: if " + arg + " in " + str(commands) + " or " + str(special_commands))
+        if arg in special_commands:
+            verbose_debug_mode = pwbs_execute_scommand(arg, verbose_debug_mode, special)
+        elif arg in commands:
+            c = True
+            if isinstance(commands[arg], list):
                 if verbose_debug_mode:
-                    print("VDM: Test: if " + cmd + "==" + command + "=" + str(end))
-                break
+                    print(u"VDM: Test: if isinstance(" + str(commands[arg]) + ",list) = " + str(isinstance(commands[arg], list)))
+                if commands[arg][0] == "--mc":
+                    cmd2 = commands[arg]
+                    if verbose_debug_mode:
+                        print(u"VDM: Command to execute: " + str(cmd2))
+                    print(u"PWBS: Uruchamianie Polecenia '" + arg + "'")
+                    print(u"PWBS: Wykonywanie `" + str(cmd2) + "`")
+                    execute(cmd2[1:])
+                    continue
+                verbose_debug_mode = pwbs_execute_multicommand(commands[arg], verbose_debug_mode, commands, special_commands, special)
             else:
+                cmd2 = commands[arg]
                 if verbose_debug_mode:
-                    print("VDM: Test: if " + cmd + "==" + command + "=" + str(end))
-                end = False
-        if end:
-            if isinstance(commands3[command], list):
-                if verbose_debug_mode:
-                    print("VDM: Test: if isinstance(" + commands[command] + ",list) = " + str(isinstance(commands[command], list)))
-                pwbs_execute_multiple(commands3[command])
-            else:
-                cmd2 = commands3[command]
-                if verbose_debug_mode:
-                    print("VDM: Command to execute: " + cmd2)
-                print("PWBS: Uruchamianie Polecenia '" + command + "'")
-                print("PWBS: Wykonywanie `" + cmd2 + "`")
-                print(execute(cmd2))
+                    print(u"VDM: Command to execute: " + cmd2)
+                print(u"PWBS: Uruchamianie Polecenia '" + arg + "'")
+                print(u"PWBS: Wykonywanie `" + cmd2 + "`")
+                execute(cmd2)
         else:
-            print("Błąd A1: Brak Komendy '" + command + "'")
+            c = True
+            print(u"PWBS: Brak Komendy " + arg)
+    if (s is False) or (c is False): # pragma: no cover
+        print(u"PWBS: Brak komendy - Uruchamianie 'main'")
+        if "main" in commands:
+            if isinstance(commands['main'], list):
+                if verbose_debug_mode:
+                    print(u"VDM: Test: if isinstance(" + str(commands['main']) + ",list) = " + str(isinstance(commands['main'], list)))
+                verbose_debug_mode = pwbs_execute_multicommand(commands['main'], verbose_debug_mode, commands, special_commands, special)
+            else:
+                cmd2 = commands["main"]
+                if verbose_debug_mode:
+                    print(u"VDM: Command to execute: " + cmd2)
+                print(u"PWBS: Uruchamianie Polecenia '" + "main" + "'")
+                print(u"PWBS: Wykonywanie `" + cmd2 + "`")
+                execute(cmd2)
+        else:
+            print(u"PWBS: Brak komendy 'main'")
 
+def pwbs_execute_scommand(command, vdm, special):
+    """Funkcja wykonująca zadanie specjalne"""
+    verbose_debug_mode = vdm
+    if command == "--new-config":
+        print("PWBS: Generowanie Pustego Pliku Komend")
+        dane = []
+        if not special: # pragma: no cover
+            write_json(config_file, dane)
+    elif command == "--version":
+        version = "v.0.9.1.0"
+        print(version)
+    elif command == "--help":
+        helper = "pwbs [--help] [--version] [--debug] [--new-config] [command]"
+        print(helper)
+        helper = "System Budowania oparty o wykonywanie komend terminala"
+        print(helper)
+        print("")
+        print("")
+        helper = "EN (for Legacy with Python Unicode Problems at some environments)"
+        print(helper)
+        helper = "Commands are stored in pwbs.commands.json file"
+        print(helper)
+        helper = "Null file can be like that: '{}'"
+        print(helper)
+        helper = "If you want to make standard simple command then make in {} range something like: '\"command_name\":\"command_to_execute\"'"
+        print(helper)
+        helper = "If you want to run by one command other ones make it like that: '\"command_name\":[\"command1\",\"command2\"]'"
+        print(helper)
+        helper = "If you want to run by one commands multiple terminal commands then do it like that '\"command_name\":[\"--mc\",\"command1\",\"command2\"]"
+        print(helper)
+        print("")
+        print("")
+        helper = "          Special Commands:"
+        print(helper)
+        print("Commands available in commands file only")
+        print("--mc")
+        print("Commands available globally by tool (CLI and Commands file)")
+        for a in ['--new-config', '--version', '--help', '--debug']:
+            print(a)
+        print("")
+        print("")
+        helper = "If you find a bug mail as at paip@paip.com.pl in title do 'PWBS Bug: Bug name'"
+        print(helper)
+        sys.exit()
+    elif command == "--debug":
+        try:
+            print(u"PWBS: Włączanie Trybu Debugowania")
+        except UnicodeEncodeError:
+            print("PWBS: Enabling Debug Mode")
+        verbose_debug_mode = True
+    return verbose_debug_mode
+def pwbs_execute_multicommand(command, verbose_debug_mode, commands, special_commands, special):
+    """Funkcja wykonująca zadanie wielofunkcyjne"""
+    if command is []: # pragma: no cover
+        return 0
+    special_commands = ['--new-config', '--version', '--help', '--debug']
+    for arg in command: # pragma: no cover
+        if verbose_debug_mode:
+            print(u"VDM: Test: if " + arg + " in " + str(commands) + " or " + str(special_commands))
+        if arg in special_commands:
+            verbose_debug_mode = pwbs_execute_scommand(arg, verbose_debug_mode, special)
+        elif arg in commands:
+            if isinstance(commands[arg], list):
+                if verbose_debug_mode:
+                    print(u"VDM: Test: if isinstance(" + str(commands[arg]) + ",list) = " + str(isinstance(commands[arg], list)))
+                verbose_debug_mode = pwbs_execute_multicommand(commands[arg], verbose_debug_mode, commands, special_commands,special)
+            else:
+                cmd2 = commands[arg]
+                if verbose_debug_mode:
+                    print(u"VDM: Command to execute: " + cmd2)
+                print(u"PWBS: Uruchamianie Polecenia '" + arg + "'")
+                print(u"PWBS: Wykonywanie `" + cmd2 + "`")
+                execute(cmd2)
+        else:
+            print(u"PWBS: Brak Komendy " + arg)
 
-def main(args):
+# PWBS.py
+def main(args, special=False):
     """Główna Funkcja Programu"""
     verbose_debug_mode = False
-    argument_number = 1
-    try:
-        if args[1] == "--new-config":
-            print("PWBS: Generowanie Pustego Pliku Komend")
-            dane = []
-            write_json(config_file, dane)
-            sys.exit()
-        elif args[1] == "--version":
-            print(version)
-            sys.exit()
-        elif args[1] == "--help":
-            helper = "pwbs [--help] [--version] [--debug] [--new-config] [command]"
-            print(helper)
-            helper = "System Budowania oparty o wykonywanie komend terminala"
-            print(helper)
-            sys.exit()
-        elif args[1] == "--debug":
-            verbose_debug_mode = True
-            argument_number = 2
-            try:
-                test = args[argument_number]
-            except Exception:
-                print("PWBS: Brak komendy - Uruchamianie 'main'")
-    except Exception:
-        print("PWBS: Brak komendy - Uruchamianie 'main'")
-    pwbs_main(args, verbose_debug_mode, argument_number)
+    print("PAiP Web Build System " + version)
+    pwbs_main(args, verbose_debug_mode, special)
+    sys.exit()
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     sys.exit(main(sys.argv))
