@@ -79,7 +79,6 @@ def pwbs_main(arguments, verbose_debug_mode, special=False):
             print("Error F2: Can't read" + config_file + " file or no commands")
         if verbose_debug_mode:
             print(u"VDM: Config File: " + config_file)
-        sys.exit()
     special_commands = ['--new-config', '--version', '--help', '--debug']
     s = False
     c = False
