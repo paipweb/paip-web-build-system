@@ -59,6 +59,14 @@ def pwbs_main(arguments, verbose_debug_mode):
             if isinstance(commands[arg], list):
                 if verbose_debug_mode:
                     print(u"VDM: Test: if isinstance(" + str(commands[arg]) + ",list) = " + str(isinstance(commands[arg], list)))
+                if commands[arg][0] == "--mc":
+                    cmd2 = commands[arg]
+                    if verbose_debug_mode:
+                        print(u"VDM: Command to execute: " + str(cmd2))
+                    print(u"PWBS: Uruchamianie Polecenia '" + arg + "'")
+                    print(u"PWBS: Wykonywanie `" + str(cmd2) + "`")
+                    execute(cmd2[1:])
+                    continue
                 verbose_debug_mode = pwbs_execute_multicommand(commands[arg], verbose_debug_mode, commands, special_commands)
             else:
                 cmd2 = commands[arg]
@@ -95,15 +103,40 @@ def pwbs_execute_scommand(command, vdm):
         dane = []
         if not special: # pragma: no cover
             write_json(config_file, dane)
-        sys.exit()
     elif command == "--version":
         version = "v.0.9.1.0"
         print(version)
-        sys.exit()
     elif command == "--help":
         helper = "pwbs [--help] [--version] [--debug] [--new-config] [command]"
         print(helper)
         helper = "System Budowania oparty o wykonywanie komend terminala"
+        print(helper)
+        print("")
+        print("")
+        helper = "EN (for Legacy with Python Unicode Problems at some environments)"
+        print(helper)
+        helper = "Commands are stored in pwbs.commands.json file"
+        print(helper)
+        helper = "Null file can be like that: '{}'"
+        print(helper)
+        helper = "If you want to make standard simple command then make in {} range something like: '\"command_name\":\"command_to_execute\"'"
+        print(helper)
+        helper = "If you want to run by one command other ones make it like that: '\"command_name\":[\"command1\",\"command2\"]'"
+        print(helper)
+        helper = "If you want to run by one commands multiple terminal commands then do it like that '\"command_name\":[\"--mc\",\"command1\",\"command2\"]"
+        print(helper)
+        print("")
+        print("")
+        helper = "          Special Commands:"
+        print(helper)
+        print("Commands available in commands file only")
+        print("--mc")
+        print("Commands available globally by tool (CLI and Commands file)")
+        for a in ['--new-config', '--version', '--help', '--debug']:
+            print(a)
+        print("")
+        print("")
+        helper = "If you find a bug mail as at paip@paip.com.pl in title do 'PWBS Bug: Bug name'"
         print(helper)
         sys.exit()
     elif command == "--debug":

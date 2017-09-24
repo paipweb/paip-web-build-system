@@ -46,6 +46,9 @@ Dodanie Zdjęć przykładu użycia w ./docs/
 1. Dodanie Tekstu Startowego
 1. TODO: Zmiana wersji skompresowanej
 
-### Do Zrobienia
+## v.0.9.1.0
 
-1. Wykonywanie wielu zadań jedną komendą (np. python pwbs.py --debug test main start server)
+1. Dodanie możliwości wielu komend w jednym zadaniu
+1. Zmiana Niektórych zadań specjalnych (Brak SystemExit)
+1. Zmiana Tekstu Pomocy
+

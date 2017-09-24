@@ -15,9 +15,15 @@ LICENSE
 
 VERSION
 
-    v.0.0.0.1
+    v.0.0.0.2
 """
 def execute(command, args = ''):
     """Funkcja Wykonująca Komendy"""
     from subprocess import call
-    return call(command + args, shell=True)
+    if isinstance(command, list):
+        retval = ""
+        for cmd in command:
+            retval += str(call(cmd, shell=True))
+        return retval
+    else:
+        return call(command + args, shell=True)

@@ -1,1 +1,1 @@
-{"test": "echo Hello World", "main": ["test", "test"], "x": ["test", "main"]}
+{"test": "echo Hello World", "main": ["test", "test"], "x": ["test", "main"],"tp":["--mc","echo T1", "echo T2"],"tsc":["--debug", "--version", "test"]}
