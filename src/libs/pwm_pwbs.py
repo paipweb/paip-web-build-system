@@ -24,7 +24,7 @@ config_file = "pwbs.commands.json"
 verbose_debug_mode = False
 def pwbs_main(arguments, verbose_debug_mode, special=False):
     """Główna Funkcja Systemu Budowania"""
-    try:
+    try: # pragma: no cover
         commands = read_json(config_file)
         if verbose_debug_mode:
             print(u"VDM: Commands: " + str(commands))
