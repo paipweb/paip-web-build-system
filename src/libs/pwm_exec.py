@@ -20,7 +20,7 @@ VERSION
 def execute(command, args = ''):
     """Funkcja Wykonująca Komendy"""
     from subprocess import call
-    if isinstance(command, list):
+    if isinstance(command, list): # pragma: no cover
         retval = ""
         for cmd in command:
             retval += str(call(cmd, shell=True))

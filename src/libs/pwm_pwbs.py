@@ -48,7 +48,7 @@ def pwbs_main(arguments, verbose_debug_mode, special=False):
     c = False
     if verbose_debug_mode:
         print(u"VDM: Arguments: " + str(arguments[1:]))
-    for arg in arguments[1:]:
+    for arg in arguments[1:]: # pragma: no cover
         s = True
         if verbose_debug_mode:
             print(u"VDM: Test: if " + arg + " in " + str(commands) + " or " + str(special_commands))
@@ -78,7 +78,7 @@ def pwbs_main(arguments, verbose_debug_mode, special=False):
         else:
             c = True
             print(u"PWBS: Brak Komendy " + arg)
-    if (s is False) or (c is False):
+    if (s is False) or (c is False): # pragma: no cover
         print(u"PWBS: Brak komendy - Uruchamianie 'main'")
         if "main" in commands:
             if isinstance(commands['main'], list):
@@ -148,10 +148,10 @@ def pwbs_execute_scommand(command, vdm, special):
     return verbose_debug_mode
 def pwbs_execute_multicommand(command, verbose_debug_mode, commands, special_commands, special):
     """Funkcja wykonująca zadanie wielofunkcyjne"""
-    if command is []:
+    if command is []: # pragma: no cover
         return 0
     special_commands = ['--new-config', '--version', '--help', '--debug']
-    for arg in command:
+    for arg in command: # pragma: no cover
         if verbose_debug_mode:
             print(u"VDM: Test: if " + arg + " in " + str(commands) + " or " + str(special_commands))
         if arg in special_commands:
