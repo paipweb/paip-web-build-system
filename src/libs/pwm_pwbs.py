@@ -22,7 +22,7 @@ from .pwm_json import *
 from .pwm_exec import *
 config_file = "pwbs.commands.json"
 verbose_debug_mode = False
-def pwbs_main(arguments, verbose_debug_mode):
+def pwbs_main(arguments, verbose_debug_mode, special=False):
     """Główna Funkcja Systemu Budowania"""
     try:
         commands = read_json(config_file)
@@ -53,7 +53,7 @@ def pwbs_main(arguments, verbose_debug_mode):
         if verbose_debug_mode:
             print(u"VDM: Test: if " + arg + " in " + str(commands) + " or " + str(special_commands))
         if arg in special_commands:
-            verbose_debug_mode = pwbs_execute_scommand(arg, verbose_debug_mode)
+            verbose_debug_mode = pwbs_execute_scommand(arg, verbose_debug_mode, special)
         elif arg in commands:
             c = True
             if isinstance(commands[arg], list):
@@ -67,7 +67,7 @@ def pwbs_main(arguments, verbose_debug_mode):
                     print(u"PWBS: Wykonywanie `" + str(cmd2) + "`")
                     execute(cmd2[1:])
                     continue
-                verbose_debug_mode = pwbs_execute_multicommand(commands[arg], verbose_debug_mode, commands, special_commands)
+                verbose_debug_mode = pwbs_execute_multicommand(commands[arg], verbose_debug_mode, commands, special_commands, special)
             else:
                 cmd2 = commands[arg]
                 if verbose_debug_mode:
@@ -84,7 +84,7 @@ def pwbs_main(arguments, verbose_debug_mode):
             if isinstance(commands['main'], list):
                 if verbose_debug_mode:
                     print(u"VDM: Test: if isinstance(" + str(commands['main']) + ",list) = " + str(isinstance(commands['main'], list)))
-                verbose_debug_mode = pwbs_execute_multicommand(commands['main'], verbose_debug_mode, commands, special_commands)
+                verbose_debug_mode = pwbs_execute_multicommand(commands['main'], verbose_debug_mode, commands, special_commands, special)
             else:
                 cmd2 = commands["main"]
                 if verbose_debug_mode:
@@ -95,7 +95,7 @@ def pwbs_main(arguments, verbose_debug_mode):
         else:
             print(u"PWBS: Brak komendy 'main'")
 
-def pwbs_execute_scommand(command, vdm):
+def pwbs_execute_scommand(command, vdm, special):
     """Funkcja wykonująca zadanie specjalne"""
     verbose_debug_mode = vdm
     if command == "--new-config":
@@ -146,7 +146,7 @@ def pwbs_execute_scommand(command, vdm):
             print("PWBS: Enabling Debug Mode")
         verbose_debug_mode = True
     return verbose_debug_mode
-def pwbs_execute_multicommand(command, verbose_debug_mode, commands, special_commands):
+def pwbs_execute_multicommand(command, verbose_debug_mode, commands, special_commands, special):
     """Funkcja wykonująca zadanie wielofunkcyjne"""
     if command is []:
         return 0
@@ -155,12 +155,12 @@ def pwbs_execute_multicommand(command, verbose_debug_mode, commands, special_com
         if verbose_debug_mode:
             print(u"VDM: Test: if " + arg + " in " + str(commands) + " or " + str(special_commands))
         if arg in special_commands:
-            verbose_debug_mode = pwbs_execute_scommand(arg, verbose_debug_mode)
+            verbose_debug_mode = pwbs_execute_scommand(arg, verbose_debug_mode, special)
         elif arg in commands:
             if isinstance(commands[arg], list):
                 if verbose_debug_mode:
                     print(u"VDM: Test: if isinstance(" + str(commands[arg]) + ",list) = " + str(isinstance(commands[arg], list)))
-                verbose_debug_mode = pwbs_execute_multicommand(commands[arg], verbose_debug_mode, commands, special_commands)
+                verbose_debug_mode = pwbs_execute_multicommand(commands[arg], verbose_debug_mode, commands, special_commands,special)
             else:
                 cmd2 = commands[arg]
                 if verbose_debug_mode:

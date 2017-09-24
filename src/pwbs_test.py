@@ -37,9 +37,9 @@ class TestPWBS(unittest.TestCase):
     def test_a1(self):
         """pwbs 1"""
         self.assertEqual(pwbs_main(["pwbs.py", "pwbs.tests.TestCase"], False), None)
-    def test_a2(self):
+    '''def test_a2(self):
         """pwbs 2"""
-        self.assertEqual(pwbs_execute_multicommand(['pwbs.tests.TestCase','pwbs.tests.TestCase'], False), None)
+        self.assertEqual(pwbs_execute_multicommand(['pwbs.tests.TestCase','pwbs.tests.TestCase'], False), None)'''
     def test_a3(self):
         """pwbs 3"""
         try:

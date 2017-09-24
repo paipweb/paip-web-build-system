@@ -35,7 +35,7 @@ def main(args, special=False):
     """Główna Funkcja Programu"""
     verbose_debug_mode = False
     print("PAiP Web Build System " + version)
-    pwbs_main(args, verbose_debug_mode)
+    pwbs_main(args, verbose_debug_mode, special)
     sys.exit()
 
 if __name__ == '__main__': # pragma: no cover
