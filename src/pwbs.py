@@ -23,44 +23,19 @@ LICENSE
 
 VERSION
 
-    v.0.9.0.1
+    v.0.9.1.0
 """
 import sys
 from libs.pwm_json import *
 from libs.pwm_exec import *
 from libs.pwm_pwbs import *
+version = "v.0.9.1.0"
 config_file = "pwbs.commands.json"
-version = "v.0.9.0.1"
 def main(args, special=False):
     """Główna Funkcja Programu"""
     verbose_debug_mode = False
-    argument_number = 1
-    try:
-        if args[1] == "--new-config":
-            print("PWBS: Generowanie Pustego Pliku Komend")
-            dane = []
-            if not special: # pragma: no cover
-                write_json(config_file, dane)
-            sys.exit()
-        elif args[1] == "--version":
-            print(version)
-            sys.exit()
-        elif args[1] == "--help":
-            helper = "pwbs [--help] [--version] [--debug] [--new-config] [command]"
-            print(helper)
-            helper = "System Budowania oparty o wykonywanie komend terminala"
-            print(helper)
-            sys.exit()
-        elif args[1] == "--debug":
-            verbose_debug_mode = True
-            argument_number = 2
-            try:
-                test = args[argument_number]
-            except Exception:
-                print("PWBS: Brak komendy - Uruchamianie 'main'")
-    except Exception:
-        print("PWBS: Brak komendy - Uruchamianie 'main'")
-    pwbs_main(args, verbose_debug_mode, argument_number)
+    print("PAiP Web Build System " + version)
+    pwbs_main(args, verbose_debug_mode)
     sys.exit()
 
 if __name__ == '__main__': # pragma: no cover

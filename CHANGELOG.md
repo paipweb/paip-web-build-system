@@ -39,7 +39,12 @@ Dodanie Zdjęć przykładu użycia w ./docs/
 
 1. Poprawienie Testu Coverage i testów jednostkowych
 
-## v.0.9.1.0
+## v.0.9.1.0 U-1
+
+1. Zmiana pwbs.py oraz pwm_pwbs.py w celu zmiany logiki działania aplikacji
+1. Zmiana ze statycznej argumentacji na pętle argumentacyjną
+1. Dodanie Tekstu Startowego
+1. TODO: Zmiana wersji skompresowanej
 
 ### Do Zrobienia
 
